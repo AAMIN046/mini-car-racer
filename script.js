@@ -2,42 +2,53 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
 let car = { x: 130, y: 400, w: 40, h: 80 };
-let obstacle = { x: Math.random()*260, y: -100, w: 40, h: 80 };
+let obstacle = {
+  x: Math.random() * 260,
+  y: -100,
+  w: 40,
+  h: 80
+};
+
 let speed = 4;
 let score = 0;
 let gameOver = false;
 
-// Touch control
+/* 🚗 Touch control */
 canvas.addEventListener("touchstart", e => {
-  let touchX = e.touches[0].clientX;
-  let rect = canvas.getBoundingClientRect();
-  let x = touchX - rect.left;
+  e.preventDefault();
 
-  if (x < canvas.width / 2) car.x -= 30;
-  else car.x += 30;
+  let rect = canvas.getBoundingClientRect();
+  let x = e.touches[0].clientX - rect.left;
+
+  if (x < canvas.width / 2) car.x -= 40;
+  else car.x += 40;
 
   if (car.x < 0) car.x = 0;
   if (car.x > canvas.width - car.w)
     car.x = canvas.width - car.w;
-});
 
-// Keyboard (PC optional)
+}, { passive: false });
+
+/* ⌨️ Keyboard (PC optional) */
 document.addEventListener("keydown", e => {
-  if (e.key === "ArrowLeft") car.x -= 30;
-  if (e.key === "ArrowRight") car.x += 30;
+  if (e.key === "ArrowLeft") car.x -= 40;
+  if (e.key === "ArrowRight") car.x += 40;
 });
 
+/* 🚗 Draw car */
 function drawCar() {
   ctx.fillStyle = "lime";
   ctx.fillRect(car.x, car.y, car.w, car.h);
 }
 
+/* 🚧 Draw obstacle */
 function drawObstacle() {
   ctx.fillStyle = "red";
   ctx.fillRect(obstacle.x, obstacle.y, obstacle.w, obstacle.h);
 }
 
-function collide(a, b) {
+/* 💥 Collision check */
+function crash(a, b) {
   return (
     a.x < b.x + b.w &&
     a.x + a.w > b.x &&
@@ -46,6 +57,7 @@ function collide(a, b) {
   );
 }
 
+/* 🔁 Game loop */
 function update() {
   if (gameOver) return;
 
@@ -57,13 +69,15 @@ function update() {
     obstacle.y = -100;
     obstacle.x = Math.random() * (canvas.width - obstacle.w);
     score++;
-    speed += 0.2;
-    document.getElementById("score").innerText = "Score: " + score;
+    speed += 0.3;
+    document.getElementById("score").innerText =
+      "Score: " + score;
   }
 
-  if (collide(car, obstacle)) {
+  if (crash(car, obstacle)) {
     gameOver = true;
-    document.getElementById("msg").innerText = "💥 Game Over!";
+    document.getElementById("msg").innerText =
+      "💥 Game Over!";
     return;
   }
 
@@ -73,3 +87,13 @@ function update() {
 }
 
 update();
+
+/* 🔒 Double-tap zoom block (extra safe) */
+let lastTouch = 0;
+document.addEventListener("touchend", e => {
+  let now = new Date().getTime();
+  if (now - lastTouch <= 300) {
+    e.preventDefault();
+  }
+  lastTouch = now;
+}, { passive: false });
