@@ -1,11 +1,9 @@
-/* 🔒 Mobile zoom & selection disable */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   user-select: none;
   -webkit-user-select: none;
-  -ms-user-select: none;
   touch-action: manipulation;
 }
 
@@ -17,14 +15,32 @@ body {
 }
 
 h1 {
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
 canvas {
   background: #111;
-  border: 2px solid #38bdf8;
-  margin-top: 10px;
-
-  /* 🔒 Canvas zoom disable */
+  border: 3px solid #38bdf8;
+  margin-top: 5px;
   touch-action: none;
+}
+
+#score {
+  margin-top: 5px;
+}
+
+#msg {
+  color: #f87171;
+  font-size: 18px;
+  margin: 5px;
+}
+
+button {
+  margin-top: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #22c55e;
+  color: black;
 }
