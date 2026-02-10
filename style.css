@@ -1,3 +1,14 @@
+/* 🔒 Mobile zoom & selection disable */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  touch-action: manipulation;
+}
+
 body {
   background: #020617;
   color: white;
@@ -5,12 +16,15 @@ body {
   text-align: center;
 }
 
+h1 {
+  margin-top: 10px;
+}
+
 canvas {
   background: #111;
   border: 2px solid #38bdf8;
   margin-top: 10px;
-}
 
-h1 {
-  margin-top: 10px;
+  /* 🔒 Canvas zoom disable */
+  touch-action: none;
 }
